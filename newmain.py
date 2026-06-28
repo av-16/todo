@@ -1,9 +1,12 @@
 import customtkinter as ctk
-from ctkdateentry import CTkDateEntry
+import core
+from tkcalendar import Calendar
 
 ctk.set_appearance_mode("Light") 
 ctk.set_default_color_theme("./teal.json") 
 
+tags = core.fetchTags()
+priority = ["High","Low"]
 class ToDoApp(ctk.CTk):
     def __init__(self):
         super().__init__()
@@ -49,13 +52,16 @@ class ToDoApp(ctk.CTk):
         ViewPage = ctk.CTkFrame(self.main_frame,corner_radius=15)
         ViewPage.place(relx=0, rely=0, relwidth=1, relheight=1)
 
-        self.welcome_label = ctk.CTkLabel(ViewPage, text="View Tasks", font=ctk.CTkFont(size=24, weight="bold"))
-        self.welcome_label.pack(pady=20)
-        self.entry_field = ctk.CTkEntry(ViewPage, placeholder_text="Type something here...")
-        self.entry_field.pack(pady=10, padx=20, fill="x")
-        self.submit_btn = ctk.CTkButton(ViewPage, text="Process Data", fg_color="green", hover_color="darkgreen",command=self.search)
-        self.submit_btn.pack(pady=10)
-
+        self.view_label = ctk.CTkLabel(ViewPage, text="View Tasks", font=ctk.CTkFont(size=24, weight="bold"))
+        self.view_label.pack(pady=20)
+#        self.entry_field = ctk.CTkEntry(ViewPage, placeholder_text="Type something here...")
+#        self.entry_field.pack(pady=10, padx=20, fill="x")
+#        self.submit_btn = ctk.CTkButton(ViewPage, text="Process Data", fg_color="green", hover_color="darkgreen",command=self.search)
+#        self.submit_btn.pack(pady=10)
+	
+        self.segmentedbutton_view = ctk.CTkSegmentedButton(ViewPage,values=["All"]+tags,command=self.viewTasks,font=("Times New Roman", 15,"bold"))
+        self.segmentedbutton_view.set("All")
+        self.segmentedbutton_view.pack(pady=5)
         self.pages["ViewPage"] = ViewPage
 
 
@@ -67,31 +73,63 @@ class ToDoApp(ctk.CTk):
         self.entry_title.pack(pady=10, padx=20, fill="x")
         self.entry_desc = ctk.CTkEntry(CreatePage, placeholder_text="Enter Description")
         self.entry_desc.pack(pady=10, padx=20, fill="x")
-        self.submit_btn = ctk.CTkButton(CreatePage, text="Process Data", fg_color="green", hover_color="darkgreen",command=self.search)
+        OtherOptions = ctk.CTkFrame(CreatePage)
+
+        OtherOptions.grid_rowconfigure(1, weight=1)  # configure grid system
+        OtherOptions.grid_columnconfigure(2, weight=1)
+        OtherOptions.pack(fill = "both",padx=5,pady=5)
+
+        self.date_entry = Calendar(OtherOptions,selectmode="day",date_pattern="yyyy-mm-dd")
+        self.date_entry.grid(row = 1,column=0,pady=10,padx=1)
+        self.setPriority = ctk.CTkOptionMenu(OtherOptions, values=["High", "Low"])
+        self.setPriority.grid(row = 1, column = 1,padx=10)
+        self.setTag= ctk.CTkOptionMenu(OtherOptions, values=tags)
+        self.setTag.grid(row = 1, column = 2,padx=1)
+
+        labelDate = ctk.CTkLabel(OtherOptions,text="Due Date:")
+        labelPriority= ctk.CTkLabel(OtherOptions,text="Set Priority:")
+        labelTag= ctk.CTkLabel(OtherOptions,text="Set Tag:")
+        labelDate.grid(row = 0, column = 0)
+        labelPriority.grid(row = 0, column = 1)
+        labelTag.grid(row = 0, column = 2)
+
+        self.submit_btn = ctk.CTkButton(CreatePage, text="Add Task", command=self.addTask)
         self.submit_btn.pack(pady=10)
-        self.date_entry = CTkDateEntry(CreatePage)
-        self.date_entry.pack(pady=10)
-        def open_calendar_fixed():
-            self.update_idletasks()
-            self.after_idle(original)
-        self.date_entry.open_calendar = open_calendar_fixed
+
+
         self.pages["CreatePage"] = CreatePage
 
 
         self.pages["ViewPage"].tkraise()
 
-    def viewtask_click(self):
-        print("fetching all tasks.")
+    def viewTasks(self,value):
+        print(f"fetching {value} tasks.")
 
     def toggle_theme(self):
         if self.theme_switch.get() == 1:
             ctk.set_appearance_mode("Dark")
         else:
             ctk.set_appearance_mode("Light")
-    def search(self):
-        text = self.entry_field.get()
-        print("searching",text)
-        self.welcome_label.text = text
+    def setDefault(self):
+        self.entry_title.delete(0,"end")
+        self.entry_desc.delete(0,"end")
+        self.setPriority.set(priority[0])
+        self.setTag.set(tags[0])
+
+    def addTask(self):
+        title = self.entry_title.get()
+        desc = self.entry_desc.get()
+        date = self.date_entry.get_date()
+        priority = self.setPriority.get()
+        tag = self.setTag.get()
+	
+        print("Add Task")
+        print(title)
+        print(desc)
+        print(date)
+        print(priority)
+        print(tag)
+        self.setDefault()
     def show_page(self,name):
         self.pages[name].tkraise()
 
