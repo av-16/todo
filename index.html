@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Messages</title>
+    <style>
+      body { font-family: Calibri, sans-serif; margin: 24px; 
+		background-color: bisque;
+	}
+      .message { padding: 10px 12px; margin: 10px 0; border: 1px solid #919191; border-radius: 8px;
+		color: darkred;
+		background-color:aliceblue;
+	 }
+	h1{
+		color: darkseagreen;
+	}
+	h2{
+		color: maroon;
+	}	
+	h3{
+		color: coral;
+	}
+	button{
+padding: 10px 16px;  border-radius: 10px;  border: 1px solid #e5e7eb;  background: #f3f4f6;  color: #111827;
+  font: 600 14px/1.2 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;  cursor: pointer;
+  box-shadow: 0 1px 0 rgba(0,0,0,.04), 0 10px 25px rgba(17,24,39,.06);  
+	}
+	button:hover{
+padding: 10px 16px;  border-radius: 10px;  border: 1px solid #3b4457;  background: #bf5555;  color: #800000;
+  font: 600 14px/1.2 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;  cursor: pointer;
+  box-shadow: 0 6px 0 rgba(0, 0, 0, 0.11), 0 10px 25px rgba(17, 24, 39, 0.93);
+transition: background-color .5s ease-in-out, border-color .5s ease, transform .5s ease, box-shadow .12s ease;
+	}
+    </style>
+  </head>
+  <body>
+    <h1>Todo</h1>
+
+    <div id="messages">
+      <div class="message">Hello!
+
+	<br>
+	If you need any help press this ->
+	<button onclick="window.location = './help.html';">Beg for Help</button>
+</div>
+      <div class="message">
+	<h2>Database</h2>
+	<h3>Table: Tasks</h3>
+	<p>
+		Taskid int (PK)
+	<br>
+		title varchar
+	<br>
+		description varchar	
+	<br>
+		priority varchar
+	<br>
+		tag varchar
+	<br>
+		duedate date
+	<br>
+		status varchar
+	<br>
+	</p>
+	
+	<h3>Table: Tags</h3>
+		tag varchar (PK)
+	<br>
+		idk put this as primary key or not.
+	<br>
+	
+
+	</p>
+      </div>
+      <div class="message">
+	<h2>Functions Needed</h2>
+	<h3>Tasks</h3>
+	<p>
+		addTask(......) -> add tasks (...) includes all parameters needed for a record in table tasks.	
+	<br>
+		checkoutTasks() -> checks all records so that status of all the ones which are after due date changes to 'failed'	
+	<br>
+		fetchTasks(tag = 'all',priority = 'all') -> returns records from the table. 	
+	<br>
+		##Note: there is no tag and priority named 'all'. You have to check such that if tag == 'all' then return records of tags.
+	<br>
+		Priority: low, medium, high
+	<br>
+		deleteTask(taskid) -> delete task 
+	<br>
+		changeStatus(taskid,status) -> changes status of the task given.
+
+	<br>
+		status: pending, completed, failed
+	<br>
+		modifyTask() is not yet planned. Only after finalizing do that.	
+	<br>
+	</p>
+
+	<h3>Tags</h3>
+		addTag(tagname) -> add tag	
+	<br>
+		fetchTags() -> fetch all tags	
+	<br>
+		deleteTag(tagname) -> delete a tag
+	<br>
+
+	</p>
+      </div>
+    </div>
+ </body>
+</html>
+
